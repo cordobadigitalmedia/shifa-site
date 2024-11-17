@@ -13,5 +13,14 @@ links:
     linkedPage: content/pages/training.mdx
     linkType: page
     buttonStyle: ghost
+  - label: Articles
+    linkedPage: content/pages/articles.mdx
+    linkType: page
+    buttonStyle: ghost
+  - label: Counselling Request
+    link: ''
+    linkedPage: content/pages/counseling-request.mdx
+    linkType: page
+    buttonStyle: default
 ---
 

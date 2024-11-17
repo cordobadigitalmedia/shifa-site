@@ -1,8 +1,19 @@
 import { defineConfig } from "tinacms"
 
+import { Topics } from "./lib"
 import { RichTextTemplates } from "./rich-text-templates"
 
 const backgroundColorOptions = ["none", "primary", "secondary", "muted"]
+
+//Collection for advice and faq - list of Q/A fields
+// Question, answer - RT, topic - string of existing values
+
+//Collection for lessons - list of lesson fields
+// title, content - RT, topic - string of existing values
+
+//Collection of resources,
+//Resource title
+//List of resources - title, content, topic
 
 export default defineConfig({
   branch: process.env.VERCEL_GIT_COMMIT_REF,
@@ -430,6 +441,84 @@ export default defineConfig({
                     type: "string",
                   },
                 ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "resource",
+        label: "Resources",
+        path: "content/resources",
+        format: "mdx",
+        fields: [
+          {
+            name: "resourceTitle",
+            label: "Resources Section Title",
+            type: "string",
+          },
+          {
+            name: "items",
+            label: "Resource Items",
+            type: "object",
+            list: true,
+            fields: [
+              {
+                name: "itemTitle",
+                label: "Resource Item Title",
+                type: "string",
+              },
+              {
+                name: "itemContent",
+                label: "Resource Item Content",
+                type: "rich-text",
+              },
+              {
+                name: "itemTopic",
+                label: "Resource Topic",
+                type: "string",
+                options: Topics,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "qa",
+        label: "Question & Answer",
+        path: "content/qa",
+        format: "mdx",
+        fields: [
+          {
+            name: "qaTitle",
+            label: "QA Section Title",
+            type: "string",
+          },
+          {
+            name: "qa_items",
+            label: "QA Items",
+            type: "object",
+            list: true,
+            ui: {
+              itemProps: (item) => {
+                return { label: item.question }
+              },
+            },
+            fields: [
+              {
+                name: "question",
+                label: "Question",
+                type: "string",
+              },
+              {
+                name: "answer",
+                label: "Answer",
+                type: "rich-text",
+              },
+              {
+                name: "asker",
+                label: "Questioner",
+                type: "string",
               },
             ],
           },
