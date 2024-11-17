@@ -34,8 +34,8 @@ export const components = {
       )
     } else {
       return (
-        <a href={url} {...props}>
-          {children}
+        <a href={props.url} {...props}>
+          {props.children}
         </a>
       )
     }

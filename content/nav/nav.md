@@ -8,5 +8,10 @@ links:
     linkedPage: content/pages/community-workshops.mdx
     linkType: page
     buttonStyle: ghost
+  - label: Training
+    link: ''
+    linkedPage: content/pages/training.mdx
+    linkType: page
+    buttonStyle: ghost
 ---
 
