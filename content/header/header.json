@@ -3,7 +3,7 @@
   "logoTitle": "",
   "logoWidth": 150,
   "siteTitle": "My Great Site",
-  "navAlignment": false,
+  "navAlignment": true,
   "backgroundColor": "muted",
   "darkmode": true
 }
