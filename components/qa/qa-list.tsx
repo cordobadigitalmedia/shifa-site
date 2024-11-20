@@ -29,6 +29,7 @@ export function QAList(props: QuestionAnswerWrapperConnectionQuery) {
                   src={qaItem?.node?.qaImage as string}
                   alt={qaItem?.node?.qaTitle as string}
                   className="size-full object-cover transition-transform duration-300 ease-in-out hover:scale-105"
+                  data-tina-field={tinaField(qaItem?.node, "qaImage")}
                 />
               </div>
               <CardHeader>

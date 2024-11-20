@@ -17,8 +17,6 @@ import { Button } from "@/components/ui/button"
 import { Footer } from "@/components/footer"
 import { SiteHeader } from "@/components/site-header"
 
-import { Alert } from "../ui/alert"
-
 export function QAPageComponent(props: {
   data: QuestionAnswerAndWrapperQuery
   variables: {
@@ -77,13 +75,22 @@ export function QAPageComponent(props: {
                         </div>
                       </AccordionTrigger>
                       <AccordionContent>
-                        <p className="text-muted-foreground text-base">
+                        <p
+                          className="text-muted-foreground text-base"
+                          data-tina-field={tinaField(item, "question")}
+                        >
                           {item?.question}
                         </p>
-                        <blockquote className="mt-6 border-l-2 pl-6 text-base">
+                        <blockquote
+                          className="mt-6 border-l-2 pl-6 text-base"
+                          data-tina-field={tinaField(item, "answer")}
+                        >
                           <TinaMarkdown content={item?.answer} />
                         </blockquote>
-                        <p className="text-muted-foreground py-2 text-sm">
+                        <p
+                          className="text-muted-foreground py-2 text-sm"
+                          data-tina-field={tinaField(item, "asker")}
+                        >
                           Asked by: {item?.asker}
                         </p>
                       </AccordionContent>
