@@ -1,6 +1,6 @@
 import { Collection } from "tinacms"
 
-import { Topics } from "../lib"
+import { resourceTypes } from "./common"
 
 export const ResourceCollection: Collection = {
   name: "resource",
@@ -14,10 +14,21 @@ export const ResourceCollection: Collection = {
       type: "string",
     },
     {
+      name: "resourceType",
+      label: "Resource Section Type",
+      type: "reference",
+      collections: ["resourceType"],
+    },
+    {
       name: "items",
       label: "Resource Items",
       type: "object",
       list: true,
+      ui: {
+        itemProps: (item) => {
+          return { label: item.itemTitle }
+        },
+      },
       fields: [
         {
           name: "itemTitle",
@@ -29,13 +40,26 @@ export const ResourceCollection: Collection = {
           label: "Resource Item Content",
           type: "rich-text",
         },
-        {
-          name: "itemTopic",
-          label: "Resource Topic",
-          type: "string",
-          options: Topics,
-        },
       ],
+    },
+  ],
+}
+
+export const ResourceTypeCollection: Collection = {
+  name: "resourceType",
+  label: "Resource Types",
+  path: "content/resourceTypes",
+  format: "md",
+  fields: [
+    {
+      name: "name",
+      label: "Name",
+      type: "string",
+    },
+    {
+      name: "image",
+      label: "Image",
+      type: "image",
     },
   ],
 }

@@ -1,15 +1,19 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { QuestionAnswerWrapperConnectionQuery } from "@/tina/__generated__/types"
+import {
+  QuestionAnswerWrapperConnectionQuery,
+  ResourceTypeConnectionQuery,
+  ResourceTypeWrapperConnectionQuery,
+} from "@/tina/__generated__/types"
 import { useTina } from "tinacms/dist/react"
 
 import { Footer } from "@/components/footer"
-import { QAList } from "@/components/qa/qa-list"
+import { ResourceTypeList } from "@/components/resource/resource-list"
 import { SiteHeader } from "@/components/site-header"
 
-export function QAIndexPageComponent(props: {
-  data: QuestionAnswerWrapperConnectionQuery
+export function ResourceIndexPageComponent(props: {
+  data: ResourceTypeWrapperConnectionQuery
   variables: {}
   query: string
 }) {
@@ -32,7 +36,7 @@ export function QAIndexPageComponent(props: {
                   : "Advice"}
               </h1>
             </div>
-            <QAList {...data} />
+            <ResourceTypeList {...data} />
           </div>
         </div>
         <Footer footer={data.footer} />

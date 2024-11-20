@@ -3,22 +3,15 @@ import { defineConfig } from "tinacms"
 import { PageCollection } from "./collections/page"
 import { AuthorCollection, PostCollection } from "./collections/post"
 import { QACollection } from "./collections/question-answer"
-import { ResourceCollection } from "./collections/resource"
+import {
+  ResourceCollection,
+  ResourceTypeCollection,
+} from "./collections/resource"
 import {
   FooterCollection,
   HeaderCollection,
   NavCollection,
 } from "./collections/wrapper"
-
-//Collection for advice and faq - list of Q/A fields
-// Question, answer - RT, topic - string of existing values
-
-//Collection for lessons - list of lesson fields
-// title, content - RT, topic - string of existing values
-
-//Collection of resources,
-//Resource title
-//List of resources - title, content, topic
 
 export default defineConfig({
   branch: process.env.VERCEL_GIT_COMMIT_REF,
@@ -40,6 +33,7 @@ export default defineConfig({
       PageCollection,
       QACollection,
       ResourceCollection,
+      ResourceTypeCollection,
       PostCollection,
       AuthorCollection,
       NavCollection,
