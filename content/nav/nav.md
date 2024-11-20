@@ -17,6 +17,11 @@ links:
     linkedPage: content/pages/articles.mdx
     linkType: page
     buttonStyle: ghost
+  - label: Advice & FAQ
+    link: /qa
+    linkedPage: ''
+    linkType: relative
+    buttonStyle: ghost
   - label: Counselling Request
     link: ''
     linkedPage: content/pages/counseling-request.mdx

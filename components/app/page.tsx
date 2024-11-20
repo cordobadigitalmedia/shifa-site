@@ -27,7 +27,7 @@ export function PageComponent(props: {
   return (
     <>
       <SiteHeader nav={data.nav} header={data.header} />
-      <div className="flex min-h-[calc(100vh-65px)] flex-col">
+      <div className="flex min-h-[calc(100vh-90px)] flex-col">
         <div className="grow">
           {data.page.blocks?.map((block, i) => {
             switch (block?.__typename) {
@@ -70,8 +70,8 @@ export function PageComponent(props: {
               }
             }
           })}
+          <Footer footer={data.footer} />
         </div>
-        <Footer footer={data.footer} />
       </div>
     </>
   )
