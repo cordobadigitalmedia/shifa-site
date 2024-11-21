@@ -57,7 +57,10 @@ export function ResourcesPageComponent({
                   aspectRatio: "1920/1080",
                   objectFit: "cover",
                 }}
-                data-tina-field={tinaField(data.qa, "qaImage")}
+                data-tina-field={tinaField(
+                  resources?.[0]?.node?.resourceType,
+                  "image"
+                )}
                 width={1920}
               />
               <div
