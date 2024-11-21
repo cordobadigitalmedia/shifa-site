@@ -7,14 +7,7 @@ import {
 import { tinaField } from "tinacms/dist/react"
 
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 
 export function ResourceTypeList(props: ResourceTypeConnectionQuery) {
   const resourceSections = props.resourceTypeConnection.edges
@@ -41,17 +34,17 @@ export function ResourceTypeList(props: ResourceTypeConnectionQuery) {
                 <CardTitle
                   data-tina-field={tinaField(resourceTypeItem?.node, "name")}
                 >
-                  {resourceTypeItem?.node?.name}
+                  {resourceTypeItem?.node?.name}s
                 </CardTitle>
               </CardHeader>
               <CardFooter>
                 <Button asChild className="w-full">
                   <Link
-                    href={`/resource/${resourceTypeItem?.node?._sys.breadcrumbs.join(
+                    href={`/resources/${resourceTypeItem?.node?._sys.breadcrumbs.join(
                       "/"
                     )}`}
                   >
-                    View {resourceTypeItem?.node?.name}s
+                    View resources
                   </Link>
                 </Button>
               </CardFooter>

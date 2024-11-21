@@ -9,10 +9,10 @@ import {
 import { useTina } from "tinacms/dist/react"
 
 import { Footer } from "@/components/footer"
-import { ResourceTypeList } from "@/components/resource/resource-list"
+import { ResourceTypeList } from "@/components/resource/resource-type-list"
 import { SiteHeader } from "@/components/site-header"
 
-export function ResourceIndexPageComponent(props: {
+export function ResourceTypeIndexPageComponent(props: {
   data: ResourceTypeWrapperConnectionQuery
   variables: {}
   query: string
