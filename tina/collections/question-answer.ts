@@ -5,6 +5,11 @@ export const QACollection: Collection = {
   label: "Question & Answer",
   path: "content/qa",
   format: "mdx",
+  ui: {
+    router: (props) => {
+      return `/qa/${props.document._sys.filename}`
+    },
+  },
   fields: [
     {
       name: "qaTitle",

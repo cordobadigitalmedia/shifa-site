@@ -82,7 +82,7 @@ export function QAPageComponent(props: {
                           {item?.question}
                         </p>
                         <blockquote
-                          className="mt-6 border-l-2 pl-6 text-base"
+                          className="prose mt-6 max-w-none border-l-2 pl-6 text-base"
                           data-tina-field={tinaField(item, "answer")}
                         >
                           <TinaMarkdown content={item?.answer} />
