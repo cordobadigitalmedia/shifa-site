@@ -32,7 +32,7 @@ export function CoverSection(props: PageBlocksCoverSection) {
             className={`absolute inset-0 flex flex-col items-center justify-center bg-gray-900/50`}
           >
             <h1
-              className="px-4 text-center text-4xl font-bold text-white sm:text-5xl md:text-6xl"
+              className="text-primary-foreground max-w-5xl px-4 text-center text-4xl font-bold sm:text-5xl md:text-6xl "
               data-tina-field={tinaField(props, "headline")}
             >
               {props.headline || ""}

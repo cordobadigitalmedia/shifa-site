@@ -38,6 +38,7 @@ export function ResourcesPageComponent({
   const resources = data.resourceConnection.edges?.filter(
     (item) => item?.node?.resourceType?._sys.breadcrumbs.join("/") === type
   )
+  const description = resources?.[0]?.node?.resourceType?.typeDescription
   const backgroundImage = resources?.[0]?.node?.resourceType?.image
     ? resources?.[0]?.node?.resourceType?.image
     : "none"
@@ -73,16 +74,38 @@ export function ResourcesPageComponent({
             </section>
           )}
           <div className="container mx-auto p-3">
+            <div
+              className="prose mt-2 max-w-none"
+              data-tina-field={tinaField(
+                resources?.[0]?.node?.resourceType,
+                "typeDescription"
+              )}
+            >
+              <TinaMarkdown content={description} />
+            </div>
             {Array.isArray(resources) && resources?.length > 0 && (
               <>
                 {resources.map((item) => (
                   <div key={item?.node?.id}>
                     <div
-                      className="prose py-2"
+                      className="prose mt-2 max-w-none py-2"
                       data-tina-field={tinaField(item?.node, "resourceTitle")}
                     >
                       <h2>{item?.node?.resourceTitle}</h2>
                     </div>
+                    {item?.node?.resourceDescription && (
+                      <div
+                        className="prose py-2"
+                        data-tina-field={tinaField(
+                          item?.node,
+                          "resourceDescription"
+                        )}
+                      >
+                        <TinaMarkdown
+                          content={item?.node?.resourceDescription}
+                        />
+                      </div>
+                    )}
                     <Select
                       onValueChange={handleItemChange}
                       value={selectedItem.toString()}

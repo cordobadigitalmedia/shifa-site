@@ -1,5 +1,6 @@
 ---
 name: Training
-image: /images/timur-shakerzianov-OZqK0WBQe8U-unsplash.jpg
+typeDescription: ''
+image: /images/img-KMw4lcmt9RYF6ntUD0ZUn.jpeg
 ---
 

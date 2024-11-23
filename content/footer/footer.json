@@ -1,7 +1,9 @@
 {
   "social": {
-    "facebook": "myaccount",
-    "github": "ismaelrumzan"
+    "facebook": "",
+    "twitter": "ShifaPsyc",
+    "github": ""
   },
-  "copyright": "Your Org Name"
+  "copyright": "Shifa Psychological Services\t",
+  "backgroundColor": "secondary"
 }

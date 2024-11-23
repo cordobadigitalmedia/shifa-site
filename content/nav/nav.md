@@ -6,7 +6,6 @@ links:
     buttonStyle: ghost
   - label: Resources
     link: /resources
-    linkedPage: ''
     linkType: relative
     buttonStyle: ghost
   - label: Articles
@@ -16,6 +15,10 @@ links:
   - label: Advice & FAQ
     link: /qa
     linkType: relative
+    buttonStyle: ghost
+  - label: Contact
+    linkedPage: content/pages/contact.mdx
+    linkType: page
     buttonStyle: ghost
   - label: Counselling Request
     link: ''
