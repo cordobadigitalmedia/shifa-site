@@ -4,6 +4,5 @@ import { ResourceTypeIndexPageComponent } from "@/components/app/resource-type-l
 
 export default async function QAIndexPage() {
   const result = await client.queries.ResourceTypeWrapperConnection()
-  console.log(result)
   return <ResourceTypeIndexPageComponent {...result} />
 }

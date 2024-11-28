@@ -30,8 +30,6 @@ export async function submitForm(prevState: any, formData: FormData) {
     .filter(([key, value]) => !key.includes(`$ACTION`))
     .map(([key, value]) => `${key}: ${value}`)
     .join("\n\n")
-
-  console.log(emailBody)
   try {
     await transporter.sendMail({
       from: email as string,

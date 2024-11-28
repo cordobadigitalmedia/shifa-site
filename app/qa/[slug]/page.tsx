@@ -7,7 +7,6 @@ export default async function QAPage({
 }: {
   params: Promise<{ slug: string[] }>
 }) {
-  console.log(`${(await params).slug}.mdx`)
   const result = await client.queries.QuestionAnswerAndWrapper({
     relativePath: `${(await params).slug}.mdx`,
   })
