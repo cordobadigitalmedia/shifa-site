@@ -1,5 +1,6 @@
 import { defineConfig } from "tinacms"
 
+import { FormCollection } from "./collections/form"
 import { PageCollection } from "./collections/page"
 import { AuthorCollection, PostCollection } from "./collections/post"
 import { QACollection } from "./collections/question-answer"
@@ -34,6 +35,7 @@ export default defineConfig({
       QACollection,
       ResourceCollection,
       ResourceTypeCollection,
+      FormCollection,
       PostCollection,
       AuthorCollection,
       NavCollection,

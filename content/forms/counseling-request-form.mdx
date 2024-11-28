@@ -1,0 +1,59 @@
+---
+title: Counselling Request Form
+description: |
+  #### Please submit your details below
+fieldblocks:
+  - label: Your Name
+    required: true
+    _template: textField
+  - label: Age
+    _template: textField
+  - label: Country/City
+    _template: textField
+  - label: Phone Number
+    _template: textField
+  - label: Education
+    _template: textField
+  - label: Profession/Work
+    _template: textField
+  - label: Employment Status
+    selectText: Please select one
+    options:
+      - optionText: Business owner
+      - optionText: Working
+      - optionText: Not working
+      - optionText: Student
+      - optionText: Other/None
+    _template: selectField
+  - label: Marital Status
+    selectText: Please select a value
+    options:
+      - optionText: Married
+      - optionText: Single
+      - optionText: Divorced
+      - optionText: Separated
+    _template: selectField
+  - label: Living Arrangement
+    _template: textField
+  - label: Brief Description of the problems you are seeking help for
+    _template: largeTextField
+  - label: Brief History of these problems
+    _template: largeTextField
+  - label: Treatment Received in past
+    _template: largeTextField
+  - label: Currently under treatment from anyone else?
+    options:
+      - optionText: 'Yes'
+      - optionText: 'No'
+    _template: selectField
+  - label: 'If yes, please explain'
+    _template: textField
+  - label: Are you on any medications?
+    options:
+      - optionText: 'Yes'
+      - optionText: 'No'
+    _template: selectField
+  - label: 'If yes, please provide names and dosages'
+    _template: largeTextField
+---
+
