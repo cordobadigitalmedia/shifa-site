@@ -31,13 +31,20 @@ export function ResourcesPageComponent({
   type: string
 }) {
   const { data } = useTina(props)
-  const [selectedItem, setSelectedItem] = useState<number>(0)
-  const handleItemChange = (value: string) => {
-    setSelectedItem(Number(value))
-  }
   const resources = data.resourceConnection.edges?.filter(
     (item) => item?.node?.resourceType?._sys.breadcrumbs.join("/") === type
   )
+  const [selectedItem, setSelectedItem] = useState<number[]>(
+    resources?.map(() => 0) || [0]
+  )
+  const handleItemChange = (value: string, i: number) => {
+    setSelectedItem((prevItems) => {
+      const newItems = [...prevItems]
+      newItems[i] = Number(value)
+      return newItems
+    })
+  }
+
   const description = resources?.[0]?.node?.resourceType?.typeDescription
   const backgroundImage = resources?.[0]?.node?.resourceType?.image
     ? resources?.[0]?.node?.resourceType?.image
@@ -85,7 +92,7 @@ export function ResourcesPageComponent({
             </div>
             {Array.isArray(resources) && resources?.length > 0 && (
               <>
-                {resources.map((item) => (
+                {resources.map((item, j) => (
                   <div key={item?.node?.id}>
                     <div
                       className="prose mt-2 max-w-none py-2"
@@ -107,8 +114,9 @@ export function ResourcesPageComponent({
                       </div>
                     )}
                     <Select
-                      onValueChange={handleItemChange}
-                      value={selectedItem.toString()}
+                      onValueChange={(val) => handleItemChange(val, j)}
+                      value={selectedItem[j].toString()}
+                      name={item?.node?.id}
                     >
                       <SelectTrigger className="w-fit">
                         <SelectValue
@@ -120,7 +128,7 @@ export function ResourcesPageComponent({
                           <SelectItem
                             value={i.toString()}
                             data-tina-field={tinaField(
-                              item?.node?.items?.[selectedItem],
+                              item?.node?.items?.[selectedItem[j]],
                               "itemTitle"
                             )}
                           >
@@ -134,13 +142,13 @@ export function ResourcesPageComponent({
                         <div
                           className="prose max-w-none"
                           data-tina-field={tinaField(
-                            item?.node?.items?.[selectedItem],
+                            item?.node?.items?.[selectedItem[j]],
                             "itemContent"
                           )}
                         >
                           <TinaMarkdown
                             content={
-                              item?.node?.items?.[selectedItem]?.itemContent
+                              item?.node?.items?.[selectedItem[j]]?.itemContent
                             }
                           />
                         </div>
