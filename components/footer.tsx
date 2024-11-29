@@ -75,15 +75,19 @@ export function Footer({ footer }: { footer: PageAndNavQuery["footer"] }) {
   const year = React.useMemo(() => new Date().getFullYear(), [])
   const social = footer.social ? objectEntriesFilter(footer.social) : null
   let bgStyle = ""
+  let textStyle = `text-primary`
   if (footer.backgroundColor) {
     bgStyle = `bg-${footer.backgroundColor}`
+  }
+  if (footer.backgroundColor === "primary") {
+    textStyle = `text-secondary`
   }
   return (
     <footer className={bgStyle}>
       <div className="mx-auto max-w-7xl px-2 py-4 md:flex md:items-center md:justify-between lg:px-4">
         <div className="mt-8 md:mt-0">
           <p
-            className="text-primary text-sm leading-5"
+            className={`${textStyle} text-sm leading-5`}
             data-tina-field={tinaField(footer, "copyright")}
           >
             &copy; {year} {footer.copyright}

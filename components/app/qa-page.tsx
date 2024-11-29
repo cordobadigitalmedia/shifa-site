@@ -65,7 +65,10 @@ export function QAPageComponent(props: {
               data.qa.qa_items?.length > 0 && (
                 <Accordion type="single" collapsible className="w-full">
                   {data.qa.qa_items.map((item, i) => (
-                    <AccordionItem value={item?.question as string}>
+                    <AccordionItem
+                      value={item?.question as string}
+                      key={item?.asker}
+                    >
                       <AccordionTrigger>
                         <div className="text-primary line-clamp-1 text-left">
                           <Badge variant="secondary" className="mr-2">

@@ -32,32 +32,38 @@ export function PageComponent(props: {
           {data.page.blocks?.map((block, i) => {
             switch (block?.__typename) {
               case "PageBlocksWelcomeHero": {
-                return <WelcomeHero key={i} {...block} />
+                return <WelcomeHero key={block.title} {...block} />
               }
               case "PageBlocksCardgrid": {
                 return (
-                  <div className="container mx-auto grid grid-cols-1 gap-8 p-4 sm:grid-cols-2 md:grid-cols-3">
-                    <CardGrid key={i} {...block} />
+                  <div
+                    key={block.gridTitle}
+                    className="container mx-auto grid grid-cols-1 gap-8 p-4 sm:grid-cols-2 md:grid-cols-3"
+                  >
+                    <CardGrid {...block} />
                   </div>
                 )
               }
               case "PageBlocksCardgrid2Col": {
                 return (
-                  <div className="container mx-auto grid grid-cols-1 gap-8 p-4 sm:grid-cols-2">
-                    <CardGrid key={i} {...block} />
+                  <div
+                    key={block.gridTitle}
+                    className="container mx-auto grid grid-cols-1 gap-8 p-4 sm:grid-cols-2"
+                  >
+                    <CardGrid {...block} />
                   </div>
                 )
               }
               case "PageBlocksGallery": {
-                return <ImageGallery key={i} {...block} />
+                return <ImageGallery key={block.galleryTitle} {...block} />
               }
               case "PageBlocksCoverSection": {
-                return <CoverSection key={i} {...block} />
+                return <CoverSection key={block.headline} {...block} />
               }
               case "PageBlocksFeaturedPosts": {
                 return (
                   <FeaturedPosts
-                    key={i}
+                    key={block.Posts?.[0]?.label || i}
                     posts={block.Posts as PageBlocksFeaturedPostsPosts[]}
                   />
                 )
@@ -66,7 +72,9 @@ export function PageComponent(props: {
                 return <PageContent key={i} {...block} />
               }
               case "PageBlocksCollapsibleSection": {
-                return <CollapsibleSection key={i} {...block} />
+                return (
+                  <CollapsibleSection key={block.collapsibleTitle} {...block} />
+                )
               }
             }
           })}

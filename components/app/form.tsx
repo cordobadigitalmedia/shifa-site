@@ -8,13 +8,6 @@ import { TinaMarkdown } from "tinacms/dist/rich-text"
 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { submitForm } from "@/components/actions/submit-form"
 import { Footer } from "@/components/footer"
@@ -65,6 +58,11 @@ export function FormComponent(props: {
                 </div>
               )}
               <Form action={formAction} className="space-y-4">
+                <input
+                  value={data.form.title || "Form request"}
+                  name="Form title"
+                  type="hidden"
+                />
                 <div
                   className="mb-3 grid w-full max-w-sm items-center gap-1.5"
                   id="useremail"
@@ -74,14 +72,14 @@ export function FormComponent(props: {
                     type="email"
                     required
                     id="useremail"
-                    name="useremail"
+                    name="Email"
                     placeholder="Please enter your e-mail address"
                   />
                 </div>
-                {data.form.fieldblocks?.map((block, i) => {
-                  switch (block?.__typename) {
-                    case "FormFieldblocksTextField": {
-                      return (
+                <>
+                  {data.form.fieldblocks?.map((block, i) => (
+                    <>
+                      {block?.__typename === "FormFieldblocksTextField" ? (
                         <div
                           className="mb-3 grid w-full max-w-sm items-center gap-1.5"
                           id={block.label || i.toString()}
@@ -99,10 +97,8 @@ export function FormComponent(props: {
                             placeholder="Please enter the information here."
                           />
                         </div>
-                      )
-                    }
-                    case "FormFieldblocksLargeTextField": {
-                      return (
+                      ) : null}
+                      {block?.__typename === "FormFieldblocksLargeTextField" ? (
                         <div
                           className="mb-3 grid w-full items-center gap-1.5"
                           id={block.label || i.toString()}
@@ -112,6 +108,7 @@ export function FormComponent(props: {
                             {block.required ? `*` : ``}
                           </Label>
                           <Textarea
+                            required={block.required || false}
                             rows={4}
                             placeholder="Please enter the information here."
                             id={block.label || `input` + i}
@@ -119,35 +116,35 @@ export function FormComponent(props: {
                             data-tina-field={tinaField(block, "label")}
                           />
                         </div>
-                      )
-                    }
-                    case "FormFieldblocksSelectField": {
-                      return (
+                      ) : null}
+                      {block?.__typename === "FormFieldblocksSelectField" ? (
                         <div
-                          className="mb-3 grid w-fit items-center gap-1.5"
+                          className="mb-3 grid w-full items-center gap-1.5"
                           id={block.label || i.toString()}
                         >
-                          <Label htmlFor={block.label || `input` + i}>
+                          <label className="text-sm">
                             {block.label}
                             {block.required ? `*` : ``}
-                          </Label>
-                          <Select name={block.label || `input` + i}>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Please select a value" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {block.options?.map((item, i) => (
-                                <SelectItem value={item?.optionText || `i*2`}>
+                            <select
+                              required={block.required || false}
+                              name={block.label || `input` + i}
+                              className="ml-2 rounded-sm border border-gray-400 p-2"
+                            >
+                              <option value="" disabled selected>
+                                Please select a value
+                              </option>
+                              {block.options?.map((item, j) => (
+                                <option value={item?.optionText || `${j * 2}`}>
                                   {item?.optionText}
-                                </SelectItem>
+                                </option>
                               ))}
-                            </SelectContent>
-                          </Select>
+                            </select>
+                          </label>
                         </div>
-                      )
-                    }
-                  }
-                })}
+                      ) : null}
+                    </>
+                  ))}
+                </>
                 <SubmitButton />
                 {state && (
                   <div

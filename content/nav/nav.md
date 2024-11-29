@@ -17,8 +17,9 @@ links:
     linkType: relative
     buttonStyle: ghost
   - label: Contact
+    link: /forms/contact-form
     linkedPage: content/pages/contact.mdx
-    linkType: page
+    linkType: relative
     buttonStyle: ghost
   - label: Counselling Request
     link: ''

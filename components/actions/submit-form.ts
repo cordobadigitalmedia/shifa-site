@@ -4,10 +4,10 @@ import nodemailer from "nodemailer"
 
 export async function submitForm(prevState: any, formData: FormData) {
   // Simulate a delay
-
+  console.log(formData)
   await new Promise((resolve) => setTimeout(resolve, 1000))
 
-  const email = formData.get("useremail")
+  const email = formData.get("Email")
 
   if (
     !email ||
@@ -16,6 +16,8 @@ export async function submitForm(prevState: any, formData: FormData) {
   ) {
     return { message: "Valid email is required", type: "error" }
   }
+
+  const title = formData.get("Form title")
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -34,7 +36,7 @@ export async function submitForm(prevState: any, formData: FormData) {
     await transporter.sendMail({
       from: email as string,
       to: process.env.TO_EMAIL,
-      subject: `Counseling Request from ${email}`,
+      subject: `${title} submission from ${email}`,
       text: emailBody,
     })
     return {

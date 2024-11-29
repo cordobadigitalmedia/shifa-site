@@ -14,17 +14,22 @@ export const components = {
   },
   Alert: (props) => {
     return (
-      <Alert variant={props.type === "info" ? "default" : "destructive"}>
-        <AlertTitle>{props.title}</AlertTitle>
-        <AlertDescription>{props.description}</AlertDescription>
-      </Alert>
+      <p>
+        <Alert
+          variant={props.type === "info" ? "default" : "destructive"}
+          className="my-3"
+        >
+          <AlertTitle>{props.title}</AlertTitle>
+          <AlertDescription>{props.description}</AlertDescription>
+        </Alert>
+      </p>
     )
   },
   Button: (props) => {
     return (
-      <Button asChild>
-        <Link href={props.link || ""}>{props.title || ""}</Link>
-      </Button>
+      <Link href={props.link || ""}>
+        <Button>{props.title || ""}</Button>
+      </Link>
     )
   },
   a: (props) => {
@@ -44,9 +49,9 @@ export const components = {
       )
     } else {
       return (
-        <a href={props.url} {...props}>
+        <Link href={props.url} {...props} className="my-3">
           {props.children}
-        </a>
+        </Link>
       )
     }
   },

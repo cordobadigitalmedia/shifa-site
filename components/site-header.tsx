@@ -40,7 +40,7 @@ export function SiteHeader({
     ? `bg-${header.backgroundColor}`
     : `bg-primary`
   return (
-    <header className={`${backgroundCol} sticky top-0 z-40 w-full border-b`}>
+    <header className={`sticky top-0 z-40 w-full border-b bg-white`}>
       <div className={`container flex ${headerHeight} items-center`}>
         <Link href="/" className="flex items-center gap-1">
           <div
