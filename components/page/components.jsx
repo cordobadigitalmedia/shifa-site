@@ -35,7 +35,9 @@ export const components = {
   a: (props) => {
     if (
       props.url &&
-      (props.url.startsWith("https") || props.url.startsWith("mailto:"))
+      (props.url.toLowerCase().startsWith("https") ||
+        props.url.toLowerCase().startsWith("mailto:") ||
+        props.url.toLowerCase().endsWith(".pdf"))
     ) {
       return (
         <a

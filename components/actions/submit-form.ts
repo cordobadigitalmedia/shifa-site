@@ -20,10 +20,15 @@ export async function submitForm(prevState: any, formData: FormData) {
   const title = formData.get("Form title")
 
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "mail.shaw.ca",
+    port: 587,
+    secure: false, // TLS
     auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_PASS,
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+    tls: {
+      ciphers: "SSLv3",
     },
   })
 
