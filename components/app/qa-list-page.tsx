@@ -22,7 +22,7 @@ export function QAIndexPageComponent(props: {
   return (
     <>
       <SiteHeader header={data.header} nav={data.nav} />
-      <div className="flex min-h-[calc(100vh-90px)] flex-col">
+      <div className="flex min-h-[calc(100vh-50px)] flex-col md:min-h-[calc(100vh-90px)]">
         <div className="grow">
           <div className="container mx-auto p-3">
             <div className="prose max-w-none py-3">

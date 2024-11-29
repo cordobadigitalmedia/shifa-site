@@ -39,7 +39,7 @@ export function FormComponent(props: {
   return (
     <>
       <SiteHeader nav={data.nav} header={data.header} />
-      <div className="flex min-h-[calc(100vh-90px)] flex-col">
+      <div className="flex min-h-[calc(100vh-50px)] flex-col md:min-h-[calc(100vh-90px)]">
         <div className="grow">
           <section className={`w-full px-4 py-8`}>
             <div className="container mx-auto">
@@ -160,8 +160,8 @@ export function FormComponent(props: {
               </Form>
             </div>
           </section>
-          <Footer footer={data.footer} />
         </div>
+        <Footer footer={data.footer} />
       </div>
     </>
   )

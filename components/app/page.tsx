@@ -1,3 +1,4 @@
+/* eslint-disable tailwindcss/classnames-order */
 "use client"
 
 import {
@@ -27,14 +28,24 @@ export function PageComponent(props: {
   return (
     <>
       <SiteHeader nav={data.nav} header={data.header} />
-      <div className="flex min-h-[calc(100vh-90px)] flex-col">
+      <div className="flex min-h-[calc(100vh-50px)] flex-col md:min-h-[calc(100vh-90px)]">
         <div className="grow">
           {data.page.blocks?.map((block, i) => {
             switch (block?.__typename) {
               case "PageBlocksWelcomeHero": {
                 return <WelcomeHero key={block.title} {...block} />
               }
-              case "PageBlocksCardgrid": {
+              case "PageBlocksCardgrid2Col": {
+                return (
+                  <div
+                    key={block.gridTitle}
+                    className="container mx-auto grid grid-cols-1 gap-8 p-4 sm:grid-cols-2"
+                  >
+                    <CardGrid {...block} />
+                  </div>
+                )
+              }
+              case "PageBlocksCardgrid3Col": {
                 return (
                   <div
                     key={block.gridTitle}
@@ -44,11 +55,11 @@ export function PageComponent(props: {
                   </div>
                 )
               }
-              case "PageBlocksCardgrid2Col": {
+              case "PageBlocksCardgrid4Col": {
                 return (
                   <div
                     key={block.gridTitle}
-                    className="container mx-auto grid grid-cols-1 gap-8 p-4 sm:grid-cols-2"
+                    className="container mx-auto grid grid-cols-1 gap-8 p-4 sm:grid-cols-2 md:grid-cols-4"
                   >
                     <CardGrid {...block} />
                   </div>
@@ -78,8 +89,8 @@ export function PageComponent(props: {
               }
             }
           })}
-          <Footer footer={data.footer} />
         </div>
+        <Footer footer={data.footer} />
       </div>
     </>
   )

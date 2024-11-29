@@ -5,5 +5,5 @@
   "siteTitle": "My Great Site",
   "navAlignment": true,
   "backgroundColor": "muted",
-  "darkmode": true
+  "darkmode": false
 }

@@ -1,5 +1,6 @@
-import { Collection } from "tinacms"
+import { AnyField, Collection, Field, Template } from "tinacms"
 
+import { cardBlockItem } from "../templates/card-grid"
 import { RichTextTemplates } from "../templates/rich-text-templates"
 import { backgroundColorOptions } from "./common"
 
@@ -182,82 +183,6 @@ export const PageCollection: Collection = {
           ],
         },
         {
-          name: "cardgrid",
-          label: "Card Grid",
-          ui: {
-            itemProps: (item) => {
-              return { label: item.gridTitle }
-            },
-          },
-          fields: [
-            {
-              name: "cardblock",
-              label: "Card Block",
-              type: "object",
-              list: true,
-              ui: {
-                itemProps: (item) => {
-                  return { label: item.headline }
-                },
-              },
-              fields: [
-                {
-                  name: "headline",
-                  label: "Headline",
-                  type: "string",
-                },
-                {
-                  name: "coverimage",
-                  label: "Cover Image",
-                  type: "image",
-                },
-                {
-                  name: "content",
-                  label: "Content",
-                  type: "rich-text",
-                },
-                {
-                  name: "links",
-                  label: "Links",
-                  type: "object",
-                  list: true,
-                  ui: {
-                    itemProps: (item) => {
-                      return { label: item.label }
-                    },
-                  },
-                  fields: [
-                    {
-                      type: "string",
-                      name: "link",
-                      label: "Relative or absolute link",
-                    },
-                    {
-                      type: "string",
-                      name: "label",
-                      label: "Button/Link Text",
-                    },
-                    {
-                      type: "string",
-                      name: "style",
-                      label: "Link Type",
-                      options: [
-                        { label: "Simple link", value: "simple" },
-                        { label: "Clickable Button", value: "button" },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              name: "gridTitle",
-              label: "Card Grid Title",
-              type: "string",
-            },
-          ],
-        },
-        {
           name: "cardgrid2Col",
           label: "Card Grid with 2 Columns",
           ui: {
@@ -265,73 +190,27 @@ export const PageCollection: Collection = {
               return { label: item.gridTitle }
             },
           },
-          fields: [
-            {
-              name: "cardblock",
-              label: "Card Block",
-              type: "object",
-              list: true,
-              ui: {
-                itemProps: (item) => {
-                  return { label: item.headline }
-                },
-              },
-              fields: [
-                {
-                  name: "headline",
-                  label: "Headline",
-                  type: "string",
-                },
-                {
-                  name: "coverimage",
-                  label: "Cover Image",
-                  type: "image",
-                },
-                {
-                  name: "content",
-                  label: "Content",
-                  type: "rich-text",
-                },
-                {
-                  name: "links",
-                  label: "Links",
-                  type: "object",
-                  list: true,
-                  ui: {
-                    itemProps: (item) => {
-                      return { label: item.label }
-                    },
-                  },
-                  fields: [
-                    {
-                      type: "string",
-                      name: "link",
-                      label: "Relative or absolute link",
-                    },
-                    {
-                      type: "string",
-                      name: "label",
-                      label: "Button/Link Text",
-                    },
-                    {
-                      type: "string",
-                      name: "style",
-                      label: "Link Type",
-                      options: [
-                        { label: "Simple link", value: "simple" },
-                        { label: "Clickable Button", value: "button" },
-                      ],
-                    },
-                  ],
-                },
-              ],
+          fields: cardBlockItem,
+        },
+        {
+          name: "cardgrid3Col",
+          label: "Card Grid with 3 Columns",
+          ui: {
+            itemProps: (item) => {
+              return { label: item.gridTitle }
             },
-            {
-              name: "gridTitle",
-              label: "Card Grid Title",
-              type: "string",
+          },
+          fields: cardBlockItem,
+        },
+        {
+          name: "cardgrid4Col",
+          label: "Card Grid with 4 Columns",
+          ui: {
+            itemProps: (item) => {
+              return { label: item.gridTitle }
             },
-          ],
+          },
+          fields: cardBlockItem,
         },
         {
           name: "gallery",

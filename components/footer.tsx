@@ -85,9 +85,9 @@ export function Footer({ footer }: { footer: PageAndNavQuery["footer"] }) {
   return (
     <footer className={bgStyle}>
       <div className="mx-auto max-w-7xl px-2 py-4 md:flex md:items-center md:justify-between lg:px-4">
-        <div className="mt-8 md:mt-0">
+        <div className="pb-2 md:pb-0">
           <p
-            className={`${textStyle} text-sm leading-5`}
+            className={`${textStyle} text-center text-sm leading-5 md:text-left`}
             data-tina-field={tinaField(footer, "copyright")}
           >
             &copy; {year} {footer.copyright}

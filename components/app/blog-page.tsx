@@ -20,7 +20,7 @@ export function BlogPageComponent(props: {
   return (
     <>
       <SiteHeader header={data.header} nav={data.nav} />
-      <div className="flex min-h-[calc(100vh-65px)] flex-col">
+      <div className="flex min-h-[calc(100vh-50px)] flex-col md:min-h-[calc(100vh-90px)]">
         {backgroundImage !== "none" && (
           <section className={`relative h-[35vh]`}>
             <Image
