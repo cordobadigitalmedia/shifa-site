@@ -2,29 +2,15 @@
 title: Counselling Request Form
 description: |
   #### Please submit your details below
+buttonText: Submit Request
 fieldblocks:
-  - label: Your Name
+  - label: Your Full Name
     required: true
+    _template: textField
+  - label: Date of Birth
     _template: textField
   - label: Age
     _template: textField
-  - label: Country/City
-    _template: textField
-  - label: Phone Number
-    _template: textField
-  - label: Education
-    _template: textField
-  - label: Profession/Work
-    _template: textField
-  - label: Employment Status
-    selectText: Please select one
-    options:
-      - optionText: Business owner
-      - optionText: Working
-      - optionText: Not working
-      - optionText: Student
-      - optionText: Other/None
-    _template: selectField
   - label: Marital Status
     selectText: Please select a value
     options:
@@ -33,6 +19,14 @@ fieldblocks:
       - optionText: Divorced
       - optionText: Separated
     _template: selectField
+  - label: Children (Boys and Girls)
+    _template: textField
+  - label: Education
+    _template: textField
+  - label: Current Employment
+    _template: textField
+  - label: 'If not working currently, when was your last employment'
+    _template: textField
   - label: Living Arrangement
     _template: textField
   - label: Brief Description of the problems you are seeking help for
@@ -55,5 +49,11 @@ fieldblocks:
     _template: selectField
   - label: 'If yes, please provide names and dosages'
     _template: largeTextField
+  - label: Contact number
+    _template: textField
+  - label: >-
+      Parental Consent if under 18 (Please give consent with your full name and
+      relationship)
+    _template: textField
 ---
 

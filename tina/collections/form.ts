@@ -14,7 +14,7 @@ export const FormCollection: Collection = {
     {
       name: "title",
       label: "Form Title",
-      description: "For SEO purposes",
+      description: "Headline at the top of the form",
       type: "string",
     },
     {
@@ -22,6 +22,11 @@ export const FormCollection: Collection = {
       type: "rich-text",
       label: "Form Description",
       description: "Rich Description for form",
+    },
+    {
+      name: "buttonText",
+      label: "Submit button text",
+      type: "string",
     },
     {
       name: "fieldblocks",

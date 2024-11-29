@@ -13,16 +13,16 @@ import { submitForm } from "@/components/actions/submit-form"
 import { Footer } from "@/components/footer"
 import { SiteHeader } from "@/components/site-header"
 
-function SubmitButton() {
+function SubmitButton({ text = "Submit" }: { text?: string }) {
   const { pending } = useFormStatus()
 
   return (
     <button
       type="submit"
       disabled={pending}
-      className="rounded bg-blue-500 px-4 py-2 text-white disabled:bg-blue-300"
+      className="bg-primary text-secondary rounded px-4 py-2 disabled:bg-gray-300"
     >
-      {pending ? "Submitting..." : "Submit"}
+      {pending ? "Submitting..." : `${text}`}
     </button>
   )
 }
@@ -145,7 +145,7 @@ export function FormComponent(props: {
                     </>
                   ))}
                 </>
-                <SubmitButton />
+                <SubmitButton text={data.form.buttonText || "Submit"} />
                 {state && (
                   <div
                     className={`mt-4 rounded p-2 ${
