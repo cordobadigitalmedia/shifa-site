@@ -3,8 +3,6 @@
 import nodemailer from "nodemailer"
 
 export async function submitForm(prevState: any, formData: FormData) {
-  // Simulate a delay
-  console.log(formData)
   await new Promise((resolve) => setTimeout(resolve, 1000))
 
   const email = formData.get("Email")
