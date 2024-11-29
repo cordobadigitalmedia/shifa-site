@@ -3,8 +3,9 @@
 import Image from "next/image"
 import Link from "next/link"
 import {
-  PageBlocksCardgrid,
   PageBlocksCardgrid2Col,
+  PageBlocksCardgrid3Col,
+  PageBlocksCardgrid4Col,
 } from "@/tina/__generated__/types"
 import { tinaField } from "tinacms/dist/react"
 import { TinaMarkdown } from "tinacms/dist/rich-text"
@@ -13,7 +14,10 @@ import { Button } from "@/components/ui/button"
 import { isAbsoluteLink } from "@/components/utils/parsers"
 
 export function CardGrid(
-  props: PageBlocksCardgrid | PageBlocksCardgrid2Col
+  props:
+    | PageBlocksCardgrid2Col
+    | PageBlocksCardgrid3Col
+    | PageBlocksCardgrid4Col
 ): JSX.Element {
   const { cardblock } = props
   return (
