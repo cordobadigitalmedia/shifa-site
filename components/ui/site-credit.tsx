@@ -12,10 +12,17 @@ export function SiteCredit({ text, link, className = "" }: SiteCreditProps) {
     <Link
       href={link}
       target="_blank"
-      className={`fixed bottom-2 right-2 z-50 flex items-center rounded-full bg-gray-600 px-3 py-1 text-xs text-white opacity-50 transition-opacity hover:opacity-100 ${className}`}
+      className={`group fixed bottom-3 right-3 z-50 flex items-center rounded-full bg-white p-1 text-xs shadow transition-opacity hover:opacity-100 ${className}`}
     >
-      {text}{" "}
-      <Image src="/lawh-icon.png" width={20} height={20} alt="CordobaDM" />
+      <span className="text-primary hidden px-1 opacity-0 transition-all duration-300 group-hover:block group-hover:opacity-100">
+        {text}{" "}
+      </span>
+      <Image
+        src="/lawh-icon.png"
+        width={25}
+        height={25}
+        alt="Built by CordobaDM"
+      />
     </Link>
   )
 }
