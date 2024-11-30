@@ -25,9 +25,9 @@ export default defineConfig({
   media: {
     tina: {
       publicFolder: "public",
-      mediaRoot: "images",
+      mediaRoot: "media",
     },
-    accept: ["image"],
+    accept: ["image", "pdf"],
   },
   schema: {
     collections: [
