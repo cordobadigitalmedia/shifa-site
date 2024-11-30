@@ -86,7 +86,7 @@ export function Footer({ footer }: { footer: PageAndNavQuery["footer"] }) {
   return (
     <footer className={bgStyle}>
       <div className="mx-auto max-w-7xl px-2 py-4 md:flex md:items-center md:justify-between lg:px-4">
-        <div className="flex justify-center md:justify-start">
+        <div className="flex min-w-[215px] justify-center md:justify-start">
           <nav className={`items-center space-x-1`}>
             {social &&
               social.map((item) => {
