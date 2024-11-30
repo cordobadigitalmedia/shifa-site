@@ -35,12 +35,17 @@ export async function submitForm(prevState: any, formData: FormData) {
     .filter(([key, value]) => !key.includes(`$ACTION`))
     .map(([key, value]) => `${key}: ${value}`)
     .join("\n\n")
+  const emailHTMLBody = formEntries
+    .filter(([key, value]) => !key.includes(`$ACTION`))
+    .map(([key, value]) => `<b>${key}</b>: ${value}<br>`)
+    .join("\n")
   try {
     await transporter.sendMail({
       from: email as string,
       to: process.env.TO_EMAIL,
       subject: `${title} submission from ${email}`,
       text: emailBody,
+      html: emailHTMLBody,
     })
     return {
       message: `Thank you for submitting a request. We will be in touch via email`,
