@@ -4,23 +4,28 @@ import Link from "next/link"
 interface SiteCreditProps {
   text: string
   link: string
-  className?: string
+  footerbg: string
 }
 
-export function SiteCredit({ text, link, className = "" }: SiteCreditProps) {
+export function SiteCredit({ text, link, footerbg }: SiteCreditProps) {
   return (
     <Link
       href={link}
       target="_blank"
-      className={`group fixed bottom-3 right-3 z-50 flex items-center rounded-full bg-white p-1 text-xs shadow transition-opacity hover:opacity-100 ${className}`}
+      className={`flex items-center justify-center text-xs transition-opacity hover:opacity-100`}
     >
-      <span className="text-primary hidden px-1 opacity-0 transition-all duration-300 group-hover:block group-hover:opacity-100">
-        {text}{" "}
+      <span
+        className={`${
+          footerbg === "primary" ? `text-secondary` : `text-primary`
+        }  mr-2 px-1 opacity-50 hover:underline hover:opacity-100`}
+      >
+        {text}
       </span>
       <Image
+        className="flex items-center rounded-full bg-white p-1 hover:bg-slate-400"
         src="/lawh-icon.png"
-        width={25}
-        height={25}
+        width={28}
+        height={28}
         alt="Built by CordobaDM"
       />
     </Link>

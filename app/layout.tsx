@@ -3,7 +3,6 @@ import "@/styles/styles.css"
 import type { Viewport } from "next"
 import { Noto_Sans, Noto_Serif } from "next/font/google"
 
-import { SiteCredit } from "@/components/ui/site-credit"
 import { ThemeProvider } from "@/components/theme-provider"
 
 export const viewport: Viewport = {
@@ -39,10 +38,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
             disableTransitionOnChange
           >
             {children}
-            <SiteCredit
-              text="Built by CordobaDM"
-              link="https://cordobadigitalmedia.com"
-            />
           </ThemeProvider>
         </body>
       </html>
