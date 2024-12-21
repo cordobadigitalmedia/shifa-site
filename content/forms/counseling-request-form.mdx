@@ -4,15 +4,17 @@ description: |
   #### Please submit your details below
 buttonText: Submit Request
 fieldblocks:
-  - label: 'Your city, state/province, and country of residence'
-    required: true
-    _template: textField
   - label: Your Full Name
     required: true
     _template: textField
   - label: Date of Birth
     _template: textField
   - label: Age
+    _template: textField
+  - label: 'Your city, state/province, and country of residence'
+    required: true
+    _template: textField
+  - label: Contact number
     _template: textField
   - label: Marital Status
     selectText: Please select a value
@@ -52,8 +54,6 @@ fieldblocks:
     _template: selectField
   - label: 'If yes, please provide names and dosages'
     _template: largeTextField
-  - label: Contact number
-    _template: textField
   - label: >-
       Parental Consent if under 18 (Please give consent with your full name and
       relationship)
