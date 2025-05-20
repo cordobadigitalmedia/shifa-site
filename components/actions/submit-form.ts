@@ -18,6 +18,18 @@ export async function submitForm(prevState: any, formData: FormData) {
   const title = formData.get("Form title")
 
   const transporter = nodemailer.createTransport({
+    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true, // SSL
+    auth: {
+      user: process.env.EMAIL_USER, // Your Gmail address
+      pass: process.env.EMAIL_PASS, // Your Gmail app password
+    },
+  })
+
+  /**
+  const transporter = nodemailer.createTransport({
     host: "mail.shaw.ca",
     port: 587,
     secure: false, // TLS
@@ -29,6 +41,7 @@ export async function submitForm(prevState: any, formData: FormData) {
       ciphers: "SSLv3",
     },
   })
+  */
 
   const formEntries = Array.from(formData.entries())
   const emailData = formEntries.filter(([key]) => !key.includes(`$ACTION`))
