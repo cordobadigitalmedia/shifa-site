@@ -70,9 +70,10 @@ export async function submitForm(prevState: any, formData: FormData) {
       email: email.toString(),
     }
 
-    // Upload to Vercel Blob (private access for security)
+    // Upload to Vercel Blob
     const blob = await put(filename, JSON.stringify(submission, null, 2), {
-      access: "private",
+      access: "public",
+      addRandomSuffix: true,
       contentType: "application/json",
     })
 
