@@ -1,6 +1,6 @@
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
-import { list } from "@vercel/blob"
+import { head, list } from "@vercel/blob"
 
 import BackButton from "../../back-button"
 
@@ -26,12 +26,14 @@ export default async function SubmissionDetailPage({
   let error: string | null = null
 
   try {
-    // Fetch the specific submission by blob URL
-    const response = await fetch(submissionId)
+    // Use Vercel Blob API to get authenticated access to private blob
+    const blobData = await head(submissionId)
+    const response = await fetch(blobData.url)
     if (!response.ok) {
       throw new Error("Submission not found")
     }
     submission = await response.json()
+    submission.blobUrl = submissionId // Add blobUrl for consistency
   } catch (err) {
     error = "Failed to load submission details"
     console.error("Error loading submission:", err)
