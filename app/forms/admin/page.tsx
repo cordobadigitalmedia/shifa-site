@@ -1,6 +1,6 @@
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
-import { list } from "@vercel/blob"
+import { head, list } from "@vercel/blob"
 
 import LogoutButton from "./logout-button"
 import SubmissionsGrid from "./submissions-grid"
@@ -21,18 +21,25 @@ export default async function SubmissionsPage() {
       prefix: "form-submissions/",
     })
 
-    // Fetch each submission
+    // Fetch each submission using Vercel Blob API for private access
     const submissionPromises = blobs.map(async (blob) => {
-      const response = await fetch(blob.url)
-      const data = await response.json()
-      return {
-        ...data,
-        blobUrl: blob.url,
-        uploadedAt: blob.uploadedAt,
+      try {
+        const blobData = await head(blob.url)
+        const response = await fetch(blobData.url)
+        const data = await response.json()
+        return {
+          ...data,
+          blobUrl: blob.url,
+          uploadedAt: blob.uploadedAt,
+        }
+      } catch (err) {
+        console.error(`Error fetching blob ${blob.url}:`, err)
+        return null
       }
     })
 
-    submissions = await Promise.all(submissionPromises)
+    const allSubmissions = await Promise.all(submissionPromises)
+    submissions = allSubmissions.filter((submission) => submission !== null)
   } catch (err) {
     error = "Failed to load submissions"
     console.error("Error loading submissions:", err)

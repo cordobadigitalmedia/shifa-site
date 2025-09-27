@@ -73,6 +73,7 @@ export async function submitForm(prevState: any, formData: FormData) {
     // Upload to Vercel Blob
     const blob = await put(filename, JSON.stringify(submission, null, 2), {
       access: "public",
+      addRandomSuffix: true,
       contentType: "application/json",
     })
 
