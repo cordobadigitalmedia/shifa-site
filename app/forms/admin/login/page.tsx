@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 
-import { checkAuthStatus } from "@/lib/auth"
+import { checkAuthStatus } from "@/lib/auth-client"
 
 export default function LoginPage() {
   const [password, setPassword] = useState("")

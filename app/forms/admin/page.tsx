@@ -1,6 +1,6 @@
 import Airtable from "airtable"
 
-import { requireAuth } from "@/lib/auth"
+import { requireAuth } from "@/lib/auth-server"
 
 import LogoutButton from "./logout-button"
 import SubmissionsGrid from "./submissions-grid"

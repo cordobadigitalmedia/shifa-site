@@ -1,6 +1,6 @@
 import Airtable from "airtable"
 
-import { requireAuth } from "@/lib/auth"
+import { requireAuth } from "@/lib/auth-server"
 
 import BackButton from "../../back-button"
 
