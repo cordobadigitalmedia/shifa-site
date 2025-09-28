@@ -1,13 +1,52 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+
+import { checkAuthStatus } from "@/lib/auth-client"
 
 export default function LoginPage() {
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+  const [checkingAuth, setCheckingAuth] = useState(true)
+  const [redirecting, setRedirecting] = useState(false)
   const router = useRouter()
+
+  // Check if user is already authenticated
+  useEffect(() => {
+    // Prevent multiple auth checks if already redirecting
+    if (redirecting) return
+
+    const checkAuth = async () => {
+      try {
+        console.log("Checking authentication status...")
+        const isAuth = await checkAuthStatus()
+
+        if (isAuth) {
+          console.log("User is authenticated, redirecting to admin")
+          setRedirecting(true)
+          // User is already authenticated, redirect to admin
+          // Use both router.push and window.location for better reliability
+          router.push("/forms/admin")
+          // Fallback redirect after a short delay
+          setTimeout(() => {
+            window.location.href = "/forms/admin"
+          }, 1000)
+          return
+        } else {
+          console.log("User not authenticated, showing login form")
+        }
+      } catch (err) {
+        // Auth check failed, continue to login form
+        console.log("Auth check failed, showing login form:", err)
+      } finally {
+        setCheckingAuth(false)
+      }
+    }
+
+    checkAuth()
+  }, [router, redirecting])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -20,14 +59,18 @@ export default function LoginPage() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include", // Ensure cookies are sent with the request
         body: JSON.stringify({ password }),
       })
 
       const data = await response.json()
 
       if (data.success) {
-        router.push("/forms/admin")
-        router.refresh()
+        // Add a small delay to ensure cookie is set before redirecting
+        setTimeout(() => {
+          router.push("/forms/admin")
+          router.refresh()
+        }, 100)
       } else {
         setError(data.error || "Invalid password")
       }
@@ -36,6 +79,24 @@ export default function LoginPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  // Show loading state while checking authentication or redirecting
+  if (checkingAuth || redirecting) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto"></div>
+            <p className="mt-4 text-sm text-gray-600">
+              {redirecting
+                ? "Redirecting to admin..."
+                : "Checking authentication..."}
+            </p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
