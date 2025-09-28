@@ -10,10 +10,14 @@ export default function LoginPage() {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const [checkingAuth, setCheckingAuth] = useState(true)
+  const [redirecting, setRedirecting] = useState(false)
   const router = useRouter()
 
   // Check if user is already authenticated
   useEffect(() => {
+    // Prevent multiple auth checks if already redirecting
+    if (redirecting) return
+
     const checkAuth = async () => {
       try {
         console.log("Checking authentication status...")
@@ -21,8 +25,14 @@ export default function LoginPage() {
 
         if (isAuth) {
           console.log("User is authenticated, redirecting to admin")
+          setRedirecting(true)
           // User is already authenticated, redirect to admin
+          // Use both router.push and window.location for better reliability
           router.push("/forms/admin")
+          // Fallback redirect after a short delay
+          setTimeout(() => {
+            window.location.href = "/forms/admin"
+          }, 1000)
           return
         } else {
           console.log("User not authenticated, showing login form")
@@ -36,7 +46,7 @@ export default function LoginPage() {
     }
 
     checkAuth()
-  }, [router])
+  }, [router, redirecting])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -71,15 +81,17 @@ export default function LoginPage() {
     }
   }
 
-  // Show loading state while checking authentication
-  if (checkingAuth) {
+  // Show loading state while checking authentication or redirecting
+  if (checkingAuth || redirecting) {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto"></div>
             <p className="mt-4 text-sm text-gray-600">
-              Checking authentication...
+              {redirecting
+                ? "Redirecting to admin..."
+                : "Checking authentication..."}
             </p>
           </div>
         </div>
