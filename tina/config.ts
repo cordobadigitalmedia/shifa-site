@@ -15,7 +15,7 @@ import {
 } from "./collections/wrapper"
 
 export default defineConfig({
-  branch: process.env.VERCEL_GIT_COMMIT_REF,
+  branch: process.env.VERCEL_GIT_COMMIT_REF || "use-airtable",
   clientId: process.env.TINA_CLIENT_ID || "",
   token: process.env.TINA_TOKEN || "",
   build: {

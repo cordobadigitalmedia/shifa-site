@@ -46,9 +46,7 @@ export async function submitForm(prevState: any, formData: FormData) {
       Email: email,
       "Submitted At": new Date().toISOString(),
       "Form Data": JSON.stringify(submission, null, 2),
-    })
-
-    console.log("Form submission stored in Airtable:", record.getId())
+    } as any)
 
     return {
       message: `Thank you for submitting a request. We will be in touch via email`,
