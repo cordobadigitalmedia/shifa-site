@@ -1,13 +1,38 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+
+import { checkAuthStatus } from "@/lib/auth"
 
 export default function LoginPage() {
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+  const [checkingAuth, setCheckingAuth] = useState(true)
   const router = useRouter()
+
+  // Check if user is already authenticated
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const isAuth = await checkAuthStatus()
+
+        if (isAuth) {
+          // User is already authenticated, redirect to admin
+          router.push("/forms/admin")
+          return
+        }
+      } catch (err) {
+        // Auth check failed, continue to login form
+        console.log("Auth check failed, showing login form")
+      } finally {
+        setCheckingAuth(false)
+      }
+    }
+
+    checkAuth()
+  }, [router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -36,6 +61,22 @@ export default function LoginPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  // Show loading state while checking authentication
+  if (checkingAuth) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto"></div>
+            <p className="mt-4 text-sm text-gray-600">
+              Checking authentication...
+            </p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (

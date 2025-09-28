@@ -1,18 +1,13 @@
-import { cookies } from "next/headers"
-import { redirect } from "next/navigation"
 import Airtable from "airtable"
+
+import { requireAuth } from "@/lib/auth"
 
 import LogoutButton from "./logout-button"
 import SubmissionsGrid from "./submissions-grid"
 
 export default async function SubmissionsPage() {
   // Check for admin authentication
-  const cookieStore = await cookies()
-  const adminAuth = cookieStore.get("admin-auth")
-
-  if (!adminAuth || adminAuth.value !== "true") {
-    redirect("/forms/admin/login")
-  }
+  await requireAuth()
   let submissions: any[] = []
   let error: string | null = null
 

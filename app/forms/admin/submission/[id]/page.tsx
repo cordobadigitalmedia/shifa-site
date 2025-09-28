@@ -1,6 +1,6 @@
-import { cookies } from "next/headers"
-import { redirect } from "next/navigation"
 import Airtable from "airtable"
+
+import { requireAuth } from "@/lib/auth"
 
 import BackButton from "../../back-button"
 
@@ -12,12 +12,7 @@ export default async function SubmissionDetailPage({
   params,
 }: SubmissionDetailPageProps) {
   // Check for admin authentication
-  const cookieStore = await cookies()
-  const adminAuth = cookieStore.get("admin-auth")
-
-  if (!adminAuth || adminAuth.value !== "true") {
-    redirect("/forms/admin/login")
-  }
+  await requireAuth()
 
   const { id } = await params
   const recordId = decodeURIComponent(id)
