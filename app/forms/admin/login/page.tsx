@@ -16,16 +16,20 @@ export default function LoginPage() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
+        console.log("Checking authentication status...")
         const isAuth = await checkAuthStatus()
 
         if (isAuth) {
+          console.log("User is authenticated, redirecting to admin")
           // User is already authenticated, redirect to admin
           router.push("/forms/admin")
           return
+        } else {
+          console.log("User not authenticated, showing login form")
         }
       } catch (err) {
         // Auth check failed, continue to login form
-        console.log("Auth check failed, showing login form")
+        console.log("Auth check failed, showing login form:", err)
       } finally {
         setCheckingAuth(false)
       }
@@ -45,14 +49,18 @@ export default function LoginPage() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include", // Ensure cookies are sent with the request
         body: JSON.stringify({ password }),
       })
 
       const data = await response.json()
 
       if (data.success) {
-        router.push("/forms/admin")
-        router.refresh()
+        // Add a small delay to ensure cookie is set before redirecting
+        setTimeout(() => {
+          router.push("/forms/admin")
+          router.refresh()
+        }, 100)
       } else {
         setError(data.error || "Invalid password")
       }
