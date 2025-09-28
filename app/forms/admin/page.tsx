@@ -1,6 +1,6 @@
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
-import { head, list } from "@vercel/blob"
+import Airtable from "airtable"
 
 import LogoutButton from "./logout-button"
 import SubmissionsGrid from "./submissions-grid"
@@ -17,29 +17,27 @@ export default async function SubmissionsPage() {
   let error: string | null = null
 
   try {
-    const { blobs } = await list({
-      prefix: "form-submissions/",
-    })
+    const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(
+      process.env.AIRTABLE_BASE_ID!
+    )
 
-    // Fetch each submission using Vercel Blob API for private access
-    const submissionPromises = blobs.map(async (blob) => {
-      try {
-        const blobData = await head(blob.url)
-        const response = await fetch(blobData.url)
-        const data = await response.json()
-        return {
-          ...data,
-          blobUrl: blob.url,
-          uploadedAt: blob.uploadedAt,
-        }
-      } catch (err) {
-        console.error(`Error fetching blob ${blob.url}:`, err)
-        return null
+    const records = await base("Form Submissions")
+      .select({
+        sort: [{ field: "Submitted At", direction: "desc" }],
+      })
+      .all()
+
+    submissions = records.map((record) => {
+      const fields = record.fields
+      const formData = JSON.parse(fields["Form Data"] as string)
+
+      return {
+        ...formData,
+        recordId: record.getId(),
+        uploadedAt: fields["Submitted At"],
+        blobUrl: record.getId(), // Use record ID as the identifier for consistency
       }
     })
-
-    const allSubmissions = await Promise.all(submissionPromises)
-    submissions = allSubmissions.filter((submission) => submission !== null)
   } catch (err) {
     error = "Failed to load submissions"
     console.error("Error loading submissions:", err)

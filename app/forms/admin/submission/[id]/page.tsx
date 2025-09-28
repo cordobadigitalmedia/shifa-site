@@ -1,6 +1,6 @@
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
-import { head, list } from "@vercel/blob"
+import Airtable from "airtable"
 
 import BackButton from "../../back-button"
 
@@ -20,20 +20,26 @@ export default async function SubmissionDetailPage({
   }
 
   const { id } = await params
-  const submissionId = decodeURIComponent(id)
+  const recordId = decodeURIComponent(id)
 
   let submission: any = null
   let error: string | null = null
 
   try {
-    // Use Vercel Blob API to get authenticated access to private blob
-    const blobData = await head(submissionId)
-    const response = await fetch(blobData.url)
-    if (!response.ok) {
-      throw new Error("Submission not found")
+    const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(
+      process.env.AIRTABLE_BASE_ID!
+    )
+
+    const record = await base("Form Submissions").find(recordId)
+    const fields = record.fields
+    const formData = JSON.parse(fields["Form Data"] as string)
+
+    submission = {
+      ...formData,
+      recordId: record.getId(),
+      uploadedAt: fields["Submitted At"],
+      blobUrl: record.getId(), // Use record ID as the identifier for consistency
     }
-    submission = await response.json()
-    submission.blobUrl = submissionId // Add blobUrl for consistency
   } catch (err) {
     error = "Failed to load submission details"
     console.error("Error loading submission:", err)
@@ -258,21 +264,23 @@ export default async function SubmissionDetailPage({
                 </h3>
                 <dl className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                   <div>
-                    <dt className="font-medium text-gray-600">Submission ID</dt>
+                    <dt className="font-medium text-gray-600">Record ID</dt>
                     <dd className="text-gray-900 font-mono text-xs break-all">
-                      {submissionId.split("/").pop()}
+                      {submission.recordId}
                     </dd>
                   </div>
                   <div>
-                    <dt className="font-medium text-gray-600">Blob URL</dt>
+                    <dt className="font-medium text-gray-600">
+                      Airtable Record
+                    </dt>
                     <dd className="text-gray-900">
                       <a
-                        href={submissionId}
+                        href={`https://airtable.com/${process.env.AIRTABLE_BASE_ID}/tblXXXXXXXXXXXXXX/viwXXXXXXXXXXXXXX/${submission.recordId}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-indigo-600 hover:text-indigo-800 break-all"
                       >
-                        View in new tab
+                        View in Airtable
                       </a>
                     </dd>
                   </div>
