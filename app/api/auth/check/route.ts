@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server"
 export async function GET() {
   try {
     const cookieStore = await cookies()
-    const adminAuth = cookieStore.get("admin-auth")
+    const adminAuth = cookieStore.get("shifa-admin-session")
 
     console.log("Auth check - cookie found:", !!adminAuth)
     console.log("Auth check - cookie value:", adminAuth?.value)
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
         cookieOptions.sameSite = "lax" // Use "lax" instead of "strict" for better compatibility
       }
 
-      cookieStore.set("admin-auth", "true", cookieOptions)
+      cookieStore.set("shifa-admin-session", "true", cookieOptions)
 
       console.log("Auth cookie set successfully")
       return NextResponse.json({ success: true })

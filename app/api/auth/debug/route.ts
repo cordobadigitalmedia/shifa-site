@@ -5,7 +5,7 @@ export async function GET() {
   try {
     const cookieStore = await cookies()
     const allCookies = cookieStore.getAll()
-    const adminAuth = cookieStore.get("admin-auth")
+    const adminAuth = cookieStore.get("shifa-admin-session")
 
     return NextResponse.json({
       allCookies: allCookies.map((c) => ({ name: c.name, value: c.value })),
