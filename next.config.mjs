@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+import { withBotId } from "botid/next/config"
+
 const nextConfig = {
   reactStrictMode: true,
   images: {
@@ -83,4 +85,4 @@ const nextConfig = {
   },
 }
 
-export default nextConfig
+export default withBotId(nextConfig)
