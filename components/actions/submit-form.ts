@@ -1,8 +1,15 @@
 "use server"
 
 import Airtable from "airtable"
+import { checkBotId } from "botid/server"
 
 export async function submitForm(prevState: any, formData: FormData) {
+  const verification = await checkBotId()
+
+  if (verification.isBot) {
+    throw new Error("Access denied")
+  }
+
   await new Promise((resolve) => setTimeout(resolve, 1000))
 
   const email = formData.get("Email")
