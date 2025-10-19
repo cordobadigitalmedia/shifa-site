@@ -70,7 +70,7 @@ export function QAPageComponent(props: {
                       key={item?.asker}
                     >
                       <AccordionTrigger>
-                        <div className="text-primary line-clamp-1 text-left">
+                        <div className="line-clamp-1 text-left text-primary">
                           <Badge variant="secondary" className="mr-2">
                             {i + 1}
                           </Badge>
@@ -79,7 +79,7 @@ export function QAPageComponent(props: {
                       </AccordionTrigger>
                       <AccordionContent>
                         <p
-                          className="text-muted-foreground text-base"
+                          className="text-base text-muted-foreground"
                           data-tina-field={tinaField(item, "question")}
                         >
                           {item?.question}
@@ -91,7 +91,7 @@ export function QAPageComponent(props: {
                           <TinaMarkdown content={item?.answer} />
                         </blockquote>
                         <p
-                          className="text-muted-foreground py-2 text-sm"
+                          className="py-2 text-sm text-muted-foreground"
                           data-tina-field={tinaField(item, "asker")}
                         >
                           Asked by: {item?.asker}

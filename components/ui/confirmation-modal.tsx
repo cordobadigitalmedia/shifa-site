@@ -1,7 +1,7 @@
+/* eslint-disable tailwindcss/migration-from-tailwind-2 */
 "use client"
 
-import { Fragment } from "react"
-import { Dialog, Transition } from "@headlessui/react"
+import * as Dialog from "@radix-ui/react-dialog"
 import { AlertTriangle } from "lucide-react"
 
 interface ConfirmationModalProps {
@@ -26,74 +26,46 @@ export default function ConfirmationModal({
   isLoading = false,
 }: ConfirmationModalProps) {
   return (
-    <Transition.Root show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-50" onClose={onClose}>
-        <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-        </Transition.Child>
-
-        <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-              enterTo="opacity-100 translate-y-0 sm:scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
-                <div className="sm:flex sm:items-start">
-                  <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                    <AlertTriangle
-                      className="h-6 w-6 text-red-600"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                    <Dialog.Title
-                      as="h3"
-                      className="text-base font-semibold leading-6 text-gray-900"
-                    >
-                      {title}
-                    </Dialog.Title>
-                    <div className="mt-2">
-                      <p className="text-sm text-gray-500">{message}</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-                  <button
-                    type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
-                    onClick={onConfirm}
-                    disabled={isLoading}
-                  >
-                    {isLoading ? "Deleting..." : confirmText}
-                  </button>
-                  <button
-                    type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                    onClick={onClose}
-                    disabled={isLoading}
-                  >
-                    {cancelText}
-                  </button>
-                </div>
-              </Dialog.Panel>
-            </Transition.Child>
+    <Dialog.Root open={isOpen} onOpenChange={onClose}>
+      <Dialog.Portal>
+        <Dialog.Overlay className="fixed inset-0 z-50 bg-gray-500 bg-opacity-75 transition-opacity" />
+        <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-6 shadow-xl">
+          <div className="flex items-start">
+            <div className="mx-auto flex size-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:size-10">
+              <AlertTriangle
+                className="size-6 text-red-600"
+                aria-hidden="true"
+              />
+            </div>
+            <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+              <Dialog.Title className="text-base font-semibold leading-6 text-gray-900">
+                {title}
+              </Dialog.Title>
+              <div className="mt-2">
+                <p className="text-sm text-gray-500">{message}</p>
+              </div>
+            </div>
           </div>
-        </div>
-      </Dialog>
-    </Transition.Root>
+          <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+            <button
+              type="button"
+              className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-50 sm:ml-3 sm:w-auto"
+              onClick={onConfirm}
+              disabled={isLoading}
+            >
+              {isLoading ? "Deleting..." : confirmText}
+            </button>
+            <button
+              type="button"
+              className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+              onClick={onClose}
+              disabled={isLoading}
+            >
+              {cancelText}
+            </button>
+          </div>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   )
 }

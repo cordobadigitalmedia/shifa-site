@@ -50,8 +50,8 @@ export function BlogList(props: PostConnectionQuery) {
   }
   return (
     <>
-      <div className="bg-muted grid gap-8 lg:grid-cols-3">
-        <div className="bg-muted order-1 col-span-2 grid grid-cols-1 gap-8 lg:-order-1 lg:grid-cols-2">
+      <div className="grid gap-8 bg-muted lg:grid-cols-3">
+        <div className="order-1 col-span-2 grid grid-cols-1 gap-8 bg-muted lg:-order-1 lg:grid-cols-2">
           {posts
             .filter((_, i) => i !== 0)
             .map((edge, i) => {
@@ -63,19 +63,19 @@ export function BlogList(props: PostConnectionQuery) {
                 <Link
                   key={post._sys.breadcrumbs.join("/")}
                   href={`/blog/${post._sys.breadcrumbs.join("/")}`}
-                  className={`bg-card grid grid-cols-1 overflow-hidden rounded-lg shadow-md`}
+                  className={`grid grid-cols-1 overflow-hidden rounded-lg bg-card shadow-md`}
                 >
                   <div className="relative col-span-1 px-8 pb-16 pt-8">
                     <h2
                       data-tina-field={tinaField(post, "title")}
                       id="featured-post"
-                      className="text-card-foreground relative line-clamp-2 text-2xl font-bold"
+                      className="relative line-clamp-2 text-2xl font-bold text-card-foreground"
                     >
                       {post.title}
                     </h2>
                     <p
                       data-tina-field={tinaField(post, "description")}
-                      className="text-primary mt-8 line-clamp-2 text-lg leading-8"
+                      className="mt-8 line-clamp-2 text-lg leading-8 text-primary"
                     >
                       {post.description}
                     </p>
@@ -84,7 +84,7 @@ export function BlogList(props: PostConnectionQuery) {
                         data-tina-field={
                           post.author && tinaField(post.author, "image")
                         }
-                        className="ring-card relative size-20 overflow-hidden rounded-full ring-4 md:ring-8"
+                        className="relative size-20 overflow-hidden rounded-full ring-4 ring-card md:ring-8"
                       >
                         <Image
                           fill={true}
@@ -108,9 +108,9 @@ export function BlogList(props: PostConnectionQuery) {
             })}
         </div>
         <div className="relative col-span-2 lg:col-span-1">
-          <div className="dark:bg-card sticky top-24 z-10 flex items-center justify-center rounded-lg bg-pink-600 px-4 pb-24 pt-12 shadow-md sm:px-12">
+          <div className="sticky top-24 z-10 flex items-center justify-center rounded-lg bg-pink-600 px-4 pb-24 pt-12 shadow-md dark:bg-card sm:px-12">
             <div className="relative z-10">
-              <h3 className="text-card dark:text-primary mb-4 text-3xl font-bold lg:mb-12 lg:text-3xl">
+              <h3 className="mb-4 text-3xl font-bold text-card dark:text-primary lg:mb-12 lg:text-3xl">
                 Subscribe to our newsletter
               </h3>
               <div className="flex w-full max-w-sm items-center space-x-2">

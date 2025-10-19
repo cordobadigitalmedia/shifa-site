@@ -54,9 +54,9 @@ export default function DeleteSubmissionButton({
     <>
       <button
         onClick={() => setIsModalOpen(true)}
-        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        className="inline-flex items-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
       >
-        <Trash2 className="h-4 w-4 mr-2" />
+        <Trash2 className="mr-2 size-4" />
         Delete Submission
       </button>
 

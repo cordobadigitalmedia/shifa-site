@@ -20,7 +20,7 @@ function SubmitButton({ text = "Submit" }: { text?: string }) {
     <button
       type="submit"
       disabled={pending}
-      className="bg-primary text-secondary rounded px-4 py-2 disabled:bg-gray-300"
+      className="rounded bg-primary px-4 py-2 text-secondary disabled:bg-gray-300"
     >
       {pending ? "Submitting..." : `${text}`}
     </button>
