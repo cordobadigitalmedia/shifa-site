@@ -42,10 +42,10 @@ export default function AdminAuthWrapper({ children }: AdminAuthWrapperProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="flex min-h-screen flex-col justify-center bg-gray-50 py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto"></div>
+            <div className="mx-auto size-8 animate-spin rounded-full border-b-2 border-indigo-600"></div>
             <p className="mt-4 text-sm text-gray-600">
               Verifying authentication...
             </p>

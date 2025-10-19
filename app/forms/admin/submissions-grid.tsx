@@ -2,6 +2,9 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { Trash2 } from "lucide-react"
+
+import ConfirmationModal from "@/components/ui/confirmation-modal"
 
 interface Submission {
   title: string
@@ -23,6 +26,11 @@ export default function SubmissionsGrid({ submissions }: SubmissionsGridProps) {
   const [searchTerm, setSearchTerm] = useState("")
   const [formTypeFilter, setFormTypeFilter] = useState("all")
   const [sortOrder, setSortOrder] = useState("newest")
+  const [deleteModal, setDeleteModal] = useState<{
+    isOpen: boolean
+    submission: Submission | null
+  }>({ isOpen: false, submission: null })
+  const [isDeleting, setIsDeleting] = useState(false)
   const router = useRouter()
 
   // Get unique form types for filter
@@ -55,6 +63,47 @@ export default function SubmissionsGrid({ submissions }: SubmissionsGridProps) {
     router.push(`/forms/admin/submission/${submissionId}`)
   }
 
+  const handleDeleteClick = (e: React.MouseEvent, submission: Submission) => {
+    e.stopPropagation() // Prevent card click
+    setDeleteModal({ isOpen: true, submission })
+  }
+
+  const handleDeleteConfirm = async () => {
+    if (!deleteModal.submission) return
+
+    setIsDeleting(true)
+    try {
+      const response = await fetch("/api/submissions/delete", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          recordId: deleteModal.submission.blobUrl,
+          secret: process.env.NEXT_PUBLIC_REVALIDATE_SECRET,
+        }),
+      })
+
+      if (response.ok) {
+        // Refresh the page to show updated data
+        window.location.reload()
+      } else {
+        console.error("Failed to delete submission")
+        alert("Failed to delete submission. Please try again.")
+      }
+    } catch (error) {
+      console.error("Delete error:", error)
+      alert("Failed to delete submission. Please try again.")
+    } finally {
+      setIsDeleting(false)
+      setDeleteModal({ isOpen: false, submission: null })
+    }
+  }
+
+  const handleDeleteCancel = () => {
+    setDeleteModal({ isOpen: false, submission: null })
+  }
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case "new":
@@ -75,12 +124,12 @@ export default function SubmissionsGrid({ submissions }: SubmissionsGridProps) {
   return (
     <div className="space-y-6">
       {/* Filters */}
-      <div className="bg-white p-4 rounded-lg shadow-sm border">
-        <div className="flex flex-col sm:flex-row gap-4">
+      <div className="rounded-lg border bg-white p-4 shadow-sm">
+        <div className="flex flex-col gap-4 sm:flex-row">
           <div className="flex-1">
             <label
               htmlFor="search"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="mb-1 block text-sm font-medium text-gray-700"
             >
               Search
             </label>
@@ -90,13 +139,13 @@ export default function SubmissionsGrid({ submissions }: SubmissionsGridProps) {
               placeholder="Search by title, form name, or email..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
           <div className="sm:w-48">
             <label
               htmlFor="formType"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="mb-1 block text-sm font-medium text-gray-700"
             >
               Form Type
             </label>
@@ -104,7 +153,7 @@ export default function SubmissionsGrid({ submissions }: SubmissionsGridProps) {
               id="formType"
               value={formTypeFilter}
               onChange={(e) => setFormTypeFilter(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <option value="all">All Forms</option>
               {formTypes.map((formType) => (
@@ -117,7 +166,7 @@ export default function SubmissionsGrid({ submissions }: SubmissionsGridProps) {
           <div className="sm:w-48">
             <label
               htmlFor="sortOrder"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="mb-1 block text-sm font-medium text-gray-700"
             >
               Sort by Date
             </label>
@@ -125,7 +174,7 @@ export default function SubmissionsGrid({ submissions }: SubmissionsGridProps) {
               id="sortOrder"
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <option value="newest">Newest First</option>
               <option value="oldest">Oldest First</option>
@@ -140,32 +189,41 @@ export default function SubmissionsGrid({ submissions }: SubmissionsGridProps) {
 
       {/* Grid */}
       {filteredSubmissions.length === 0 ? (
-        <div className="text-center py-12">
-          <div className="text-gray-500 text-lg">No submissions found</div>
-          <div className="text-gray-400 text-sm mt-1">
+        <div className="py-12 text-center">
+          <div className="text-lg text-gray-500">No submissions found</div>
+          <div className="mt-1 text-sm text-gray-400">
             {searchTerm || formTypeFilter !== "all"
               ? "Try adjusting your filters"
               : "No form submissions yet"}
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredSubmissions.map((submission, index) => (
             <div
               key={index}
               onClick={() => handleCardClick(submission)}
-              className="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md hover:border-indigo-300 transition-all duration-200 cursor-pointer"
+              className="group relative cursor-pointer rounded-lg border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:border-indigo-300 hover:shadow-md"
             >
+              {/* Delete Icon */}
+              <button
+                onClick={(e) => handleDeleteClick(e, submission)}
+                className="absolute right-3 top-3 z-10 rounded-full bg-red-100 p-1 text-red-600 opacity-0 transition-all duration-200 hover:bg-red-200 group-hover:opacity-100"
+                title="Delete submission"
+              >
+                <Trash2 className="size-4" />
+              </button>
+
               <div className="p-6">
                 <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 line-clamp-2 mb-2">
+                  <h3 className="mb-2 line-clamp-2 text-lg font-semibold text-gray-900">
                     {submission.title}
                   </h3>
-                  <p className="text-sm text-gray-600 mb-1">
+                  <p className="mb-1 text-sm text-gray-600">
                     <span className="font-medium">Form:</span>{" "}
                     {submission.formName}
                   </p>
-                  <p className="text-sm text-gray-600 mb-1">
+                  <p className="mb-1 text-sm text-gray-600">
                     <span className="font-medium">Email:</span>{" "}
                     {submission.email}
                   </p>
@@ -181,15 +239,15 @@ export default function SubmissionsGrid({ submissions }: SubmissionsGridProps) {
                     {submission.submissionData.length}
                   </div>
                   {submission.notes && (
-                    <div className="text-sm text-amber-600 bg-amber-50 p-2 rounded">
+                    <div className="rounded bg-amber-50 p-2 text-sm text-amber-600">
                       <span className="font-medium">Notes:</span>{" "}
                       {submission.notes}
                     </div>
                   )}
                 </div>
 
-                <div className="mt-4 pt-4 border-t border-gray-100">
-                  <div className="text-xs text-indigo-600 font-medium">
+                <div className="mt-4 border-t border-gray-100 pt-4">
+                  <div className="text-xs font-medium text-indigo-600">
                     Click to view details →
                   </div>
                 </div>
@@ -198,6 +256,18 @@ export default function SubmissionsGrid({ submissions }: SubmissionsGridProps) {
           ))}
         </div>
       )}
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={deleteModal.isOpen}
+        onClose={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Submission"
+        message={`Are you sure you want to delete "${deleteModal.submission?.title}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        isLoading={isDeleting}
+      />
     </div>
   )
 }

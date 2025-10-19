@@ -37,13 +37,13 @@ export function WelcomeHero(props: PageBlocksWelcomeHero) {
         )}
         <div className="z-5 relative max-w-5xl px-4 text-center">
           <h1
-            className="text-primary-foreground mb-4 text-5xl font-bold"
+            className="mb-4 text-5xl font-bold text-primary-foreground"
             data-tina-field={tinaField(props, "title")}
           >
             {props.title}
           </h1>
           <div
-            className="prose text-primary-foreground [&_h3]:text-primary-foreground max-w-none"
+            className="prose max-w-none text-primary-foreground [&_h3]:text-primary-foreground"
             data-tina-field={tinaField(props, "message")}
           >
             <TinaMarkdown content={props.message} />

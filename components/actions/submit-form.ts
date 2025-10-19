@@ -1,5 +1,6 @@
 "use server"
 
+import { revalidateTag } from "next/cache"
 import Airtable from "airtable"
 import { checkBotId } from "botid/server"
 
@@ -54,6 +55,9 @@ export async function submitForm(prevState: any, formData: FormData) {
       "Submitted At": new Date().toISOString(),
       "Form Data": JSON.stringify(submission, null, 2),
     } as any)
+
+    // Revalidate the form submissions cache
+    revalidateTag("form-submissions")
 
     return {
       message: `Thank you for submitting a request. We will be in touch via email`,
