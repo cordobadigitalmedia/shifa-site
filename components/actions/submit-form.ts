@@ -1,5 +1,6 @@
 "use server"
 
+import { revalidateTag } from "next/cache"
 import Airtable from "airtable"
 import { checkBotId } from "botid/server"
 
@@ -55,27 +56,8 @@ export async function submitForm(prevState: any, formData: FormData) {
       "Form Data": JSON.stringify(submission, null, 2),
     } as any)
 
-    // Trigger revalidation of form submissions cache
-    try {
-      await fetch(
-        `${
-          process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
-        }/api/revalidate`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            tag: "form-submissions",
-            secret: process.env.REVALIDATE_SECRET,
-          }),
-        }
-      )
-    } catch (revalidateError) {
-      console.error("Failed to revalidate cache:", revalidateError)
-      // Don't fail the form submission if revalidation fails
-    }
+    // Revalidate the form submissions cache
+    revalidateTag("form-submissions")
 
     return {
       message: `Thank you for submitting a request. We will be in touch via email`,
