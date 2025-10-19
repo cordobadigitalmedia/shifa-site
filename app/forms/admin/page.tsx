@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache"
 import Airtable from "airtable"
 
 import AdminAuthWrapper from "@/components/auth/admin-auth-wrapper"
@@ -5,32 +6,45 @@ import AdminAuthWrapper from "@/components/auth/admin-auth-wrapper"
 import LogoutButton from "./logout-button"
 import SubmissionsGrid from "./submissions-grid"
 
+async function getSubmissions() {
+  const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(
+    process.env.AIRTABLE_BASE_ID!
+  )
+
+  const records = await base("Form Submissions")
+    .select({
+      sort: [{ field: "Submitted At", direction: "desc" }],
+    })
+    .all()
+
+  return records.map((record) => {
+    const fields = record.fields
+    const formData = JSON.parse(fields["Form Data"] as string)
+
+    return {
+      ...formData,
+      recordId: record.getId(),
+      uploadedAt: fields["Submitted At"],
+      blobUrl: record.getId(), // Use record ID as the identifier for consistency
+    }
+  })
+}
+
+const getCachedSubmissions = unstable_cache(
+  getSubmissions,
+  ["form-submissions"],
+  {
+    tags: ["form-submissions"],
+    revalidate: 3600, // 1 hour
+  }
+)
+
 export default async function SubmissionsPage() {
   let submissions: any[] = []
   let error: string | null = null
 
   try {
-    const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(
-      process.env.AIRTABLE_BASE_ID!
-    )
-
-    const records = await base("Form Submissions")
-      .select({
-        sort: [{ field: "Submitted At", direction: "desc" }],
-      })
-      .all()
-
-    submissions = records.map((record) => {
-      const fields = record.fields
-      const formData = JSON.parse(fields["Form Data"] as string)
-
-      return {
-        ...formData,
-        recordId: record.getId(),
-        uploadedAt: fields["Submitted At"],
-        blobUrl: record.getId(), // Use record ID as the identifier for consistency
-      }
-    })
+    submissions = await getCachedSubmissions()
   } catch (err) {
     error = "Failed to load submissions"
     console.error("Error loading submissions:", err)

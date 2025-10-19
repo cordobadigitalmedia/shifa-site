@@ -1,12 +1,36 @@
+import { unstable_cache } from "next/cache"
 import Airtable from "airtable"
 
 import AdminAuthWrapper from "@/components/auth/admin-auth-wrapper"
 
 import BackButton from "../../back-button"
+import DeleteSubmissionButton from "./delete-submission-button"
 
 interface SubmissionDetailPageProps {
   params: Promise<{ id: string }>
 }
+
+async function getSubmission(recordId: string) {
+  const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(
+    process.env.AIRTABLE_BASE_ID!
+  )
+
+  const record = await base("Form Submissions").find(recordId)
+  const fields = record.fields
+  const formData = JSON.parse(fields["Form Data"] as string)
+
+  return {
+    ...formData,
+    recordId: record.getId(),
+    uploadedAt: fields["Submitted At"],
+    blobUrl: record.getId(), // Use record ID as the identifier for consistency
+  }
+}
+
+const getCachedSubmission = unstable_cache(getSubmission, ["form-submission"], {
+  tags: ["form-submissions", "form-submission"],
+  revalidate: 3600, // 1 hour
+})
 
 export default async function SubmissionDetailPage({
   params,
@@ -18,20 +42,7 @@ export default async function SubmissionDetailPage({
   let error: string | null = null
 
   try {
-    const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(
-      process.env.AIRTABLE_BASE_ID!
-    )
-
-    const record = await base("Form Submissions").find(recordId)
-    const fields = record.fields
-    const formData = JSON.parse(fields["Form Data"] as string)
-
-    submission = {
-      ...formData,
-      recordId: record.getId(),
-      uploadedAt: fields["Submitted At"],
-      blobUrl: record.getId(), // Use record ID as the identifier for consistency
-    }
+    submission = await getCachedSubmission(recordId)
   } catch (err) {
     error = "Failed to load submission details"
     console.error("Error loading submission:", err)
@@ -87,12 +98,17 @@ export default async function SubmissionDetailPage({
 
               <div className="mt-6">
                 <div className="mb-6">
-                  <h1 className="text-2xl font-bold text-gray-900">
-                    Submission Details
-                  </h1>
-                  <p className="text-gray-600 mt-1">
-                    {submission.formName} • {submission.email}
-                  </p>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h1 className="text-2xl font-bold text-gray-900">
+                        Submission Details
+                      </h1>
+                      <p className="text-gray-600 mt-1">
+                        {submission.formName} • {submission.email}
+                      </p>
+                    </div>
+                    <DeleteSubmissionButton submission={submission} />
+                  </div>
                 </div>
 
                 {/* Submission Info - Compact header */}
@@ -181,21 +197,44 @@ export default async function SubmissionDetailPage({
                                     </div>
                                   </td>
                                   <td className="px-6 py-4 text-sm text-gray-900">
-                                    <input
-                                      type="text"
-                                      value={field.fieldValue || ""}
-                                      readOnly
-                                      className={`w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 overflow-x-auto whitespace-nowrap ${
-                                        index % 2 === 0
-                                          ? "bg-white"
-                                          : "bg-gray-50"
-                                      }`}
-                                      style={{
-                                        minWidth: "200px",
-                                        scrollbarWidth: "thin",
-                                        overflowX: "auto",
-                                      }}
-                                    />
+                                    {field.fieldValue &&
+                                    field.fieldValue.length > 50 ? (
+                                      <textarea
+                                        value={field.fieldValue || ""}
+                                        readOnly
+                                        rows={Math.max(
+                                          3,
+                                          Math.ceil(
+                                            field.fieldValue.length / 65
+                                          )
+                                        )}
+                                        className={`w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 resize-none ${
+                                          index % 2 === 0
+                                            ? "bg-white"
+                                            : "bg-gray-50"
+                                        }`}
+                                        style={{
+                                          minWidth: "200px",
+                                          scrollbarWidth: "thin",
+                                        }}
+                                      />
+                                    ) : (
+                                      <input
+                                        type="text"
+                                        value={field.fieldValue || ""}
+                                        readOnly
+                                        className={`w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 overflow-x-auto whitespace-nowrap ${
+                                          index % 2 === 0
+                                            ? "bg-white"
+                                            : "bg-gray-50"
+                                        }`}
+                                        style={{
+                                          minWidth: "200px",
+                                          scrollbarWidth: "thin",
+                                          overflowX: "auto",
+                                        }}
+                                      />
+                                    )}
                                   </td>
                                 </tr>
                               )
@@ -221,17 +260,34 @@ export default async function SubmissionDetailPage({
                               <div className="text-sm font-medium text-gray-500 mb-2">
                                 {field.fieldName}
                               </div>
-                              <input
-                                type="text"
-                                value={field.fieldValue || ""}
-                                readOnly
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-transparent text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 overflow-x-auto whitespace-nowrap"
-                                style={{
-                                  minWidth: "200px",
-                                  scrollbarWidth: "thin",
-                                  overflowX: "auto",
-                                }}
-                              />
+                              {field.fieldValue &&
+                              field.fieldValue.length > 50 ? (
+                                <textarea
+                                  value={field.fieldValue || ""}
+                                  readOnly
+                                  rows={Math.max(
+                                    3,
+                                    Math.ceil(field.fieldValue.length / 65)
+                                  )}
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-transparent text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 resize-none"
+                                  style={{
+                                    minWidth: "200px",
+                                    scrollbarWidth: "thin",
+                                  }}
+                                />
+                              ) : (
+                                <input
+                                  type="text"
+                                  value={field.fieldValue || ""}
+                                  readOnly
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-transparent text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 overflow-x-auto whitespace-nowrap"
+                                  style={{
+                                    minWidth: "200px",
+                                    scrollbarWidth: "thin",
+                                    overflowX: "auto",
+                                  }}
+                                />
+                              )}
                             </div>
                           )
                         )}
