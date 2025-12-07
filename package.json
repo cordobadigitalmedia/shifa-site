@@ -29,7 +29,7 @@
     "class-variance-authority": "^0.4.0",
     "clsx": "^1.2.1",
     "lucide-react": "latest",
-    "next": "latest",
+    "next": "15.5.7",
     "next-themes": "latest",
     "nodemailer": "^6.9.16",
     "prettier-plugin-tailwindcss": "^0.3.0",
